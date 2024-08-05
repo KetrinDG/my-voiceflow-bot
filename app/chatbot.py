@@ -90,7 +90,6 @@ class AmazonReturnPolicyChatbot:
         """
         question_cleaned = question.lower().translate(str.maketrans('', '', string.punctuation)).strip()
 
-        # Поиск подходящего ответа по ключевым словам
         for key in self.predefined_answers:
             if key in question_cleaned:
                 answer = self.predefined_answers.get(key)
