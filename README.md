@@ -2,85 +2,119 @@
 
 ## Overview
 
-The Amazon Return Policy Chatbot is a FastAPI application designed to interact with users and provide information about Amazon's return policies. It uses a combination of predefined answers and a question-answering model to respond to user queries.
+The **Amazon Return Policy Chatbot** is a FastAPI application designed to interact with users and provide information about Amazon's return policies. It combines predefined answers with a question-answering (QA) model to address user queries.
 
 ## Project Structure
 
-- `app/`
-  - `__init__.py`: Initialization file for the app directory.
-  - `main.py`: The entry point for the FastAPI application.
-  - `chatbot.py`: Contains the `AmazonReturnPolicyChatbot` class responsible for handling user queries and providing answers.
-  - `models.py`: Defines the data models used in the application, including the `Query` model for user input.
-  - `scraper.py`: Contains functions for scraping Amazon's return policy from their website.
-  - `utils.py`: Utility functions for interacting with the OpenAI API and processing return policy text.
-
-- `requirements.txt`: List of dependencies required for the project.
-- `README.md`: Project documentation file.
+```
+my-voiceflow-bot/
+│
+├── app/
+│   ├── __init__.py          # Initialization file for the app directory.
+│   ├── main.py              # The entry point for the FastAPI application.
+│   ├── chatbot.py           # Contains the AmazonReturnPolicyChatbot class for handling queries.
+│   ├── models.py            # Defines data models, including the Query model.
+│   ├── qa-models.p          # Contains the pre-trained QA models for answering queries.
+│   ├── scraper.py           # Functions for scraping Amazon's return policy.
+│   └── utils.py             # Utility functions for interacting with the OpenAI API and processing text.
+│
+├── requirements.txt         # List of project dependencies.
+├── .dockerignore            # Docker ignore file to exclude files from the Docker context.
+├── Dockerfile               # Docker configuration file for containerizing the application.
+└── README.md                # Project documentation file.
+```
 
 ## Installation
 
 To set up the project, follow these steps:
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/KetrinDG/my-voiceflow-bot.git
-   cd amazon_return_chatbot
-   ```
+1. **Clone the repository:**
 
-2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
+    ```sh
+    git clone https://github.com/KetrinDG/my-voiceflow-bot.git
+    cd my-voiceflow-bot
+    ```
 
-3. Install the dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+2. **Create a virtual environment:**
 
-4. Set up environment variables for API keys and other configurations. For OpenAI API, ensure you have your API key set up in your environment.
+    ```sh
+    python -m venv venv
+    source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+    ```
+
+3. **Install the dependencies:**
+
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+4. **Set up environment variables:**
+
+    Ensure you have your OpenAI API key and other necessary configurations in your environment. Set `OPENAI_API_KEY` in your environment variables.
+
+## Docker Setup
+
+The project includes Docker configuration files to containerize the application. Follow these steps to run the application using Docker:
+
+1. **Build the Docker image:**
+
+    ```sh
+    docker build -t amazon-return-policy-chatbot -f Dockerfile .
+    ```
+
+2. **Run the Docker container:**
+
+    ```sh
+    docker run -p 8000:8000 --env-file .env amazon-return-policy-chatbot
+    ```
+
+    Ensure to create a `.env` file with necessary environment variables like `OPENAI_API_KEY`.
 
 ## Usage
 
 ### Running the Application
 
-To start the FastAPI application, run:
-```bash
+To start the FastAPI application without Docker, run:
+
+```sh
 uvicorn app.main:app --reload
 ```
 
-The application will be accessible at `http://localhost:8000`.
+The application will be accessible at [http://localhost:8000](http://localhost:8000).
 
 ### Endpoints
 
-- **Root Endpoint (`GET /`)**
+- **Root Endpoint (GET /)**
 
-  Returns a greeting message from the chatbot.
+    Returns a greeting message from the chatbot.
 
-  **Response:**
-  ```json
-  {
-    "message": "Hello! How can I help you with Amazon return policies?"
-  }
-  ```
+    **Response:**
 
-- **Query Endpoint (`POST /query/`)**
+    ```json
+    {
+      "message": "Hello! How can I help you with Amazon return policies?"
+    }
+    ```
 
-  Submit a query to the chatbot and receive a response.
+- **Query Endpoint (POST /query/)**
 
-  **Request Body:**
-  ```json
-  {
-    "question": "How can I return an item?"
-  }
-  ```
+    Submit a query to the chatbot and receive a response.
 
-  **Response:**
-  ```json
-  {
-    "answer": "To return an item, visit the Returns Support Centre, choose the item, and follow the instructions to print a return label."
-  }
-  ```
+    **Request Body:**
+
+    ```json
+    {
+      "question": "How can I return an item?"
+    }
+    ```
+
+    **Response:**
+
+    ```json
+    {
+      "answer": "To return an item, visit the Returns Support Centre, choose the item, and follow the instructions to print a return label."
+    }
+    ```
 
 ## Functionality
 
@@ -90,7 +124,7 @@ The `AmazonReturnPolicyChatbot` class is responsible for:
 
 - Loading the return policy text from Amazon's website.
 - Providing predefined answers for common queries.
-- Using a QA model to generate answers for less common queries.
+- Using the QA model to generate answers for less common queries.
 
 ### `utils.py`
 
@@ -101,7 +135,10 @@ Contains utility functions for:
 
 ### `scraper.py`
 
-Provides functionality for scraping the return policy from Amazon's website and saving it to a file.
+Provides functionality for:
+
+- Scraping the return policy from Amazon's website.
+- Saving the scraped policy text to a file.
 
 ## Contributing
 
@@ -113,8 +150,8 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Acknowledgments
 
-- [FastAPI](https://fastapi.tiangolo.com/)
-- [OpenAI](https://openai.com/)
-- [Hugging Face Transformers](https://huggingface.co/transformers/)
-- [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/)
-```
+- **FastAPI**: For building the high-performance web framework.
+- **OpenAI**: For providing the API used in the chatbot.
+- **Hugging Face Transformers**: For the QA model.
+- **BeautifulSoup**: For scraping Amazon's return policy.
+
